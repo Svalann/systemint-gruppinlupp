@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chat</title>
+        <title>Sensor temp display</title>
     </head>
     <body>
         <table>
@@ -12,7 +12,11 @@
             <tr>
                 <TD><H1 id="txttemperature">23,5</H1></TD>
             </tr>
-            <tr><td><button type="button" onclick="printLatestTemp();" id="buttonState" >Get current temperature</button><td></tr>
+            <tr>
+                <td><button type="button" onclick="printLatestTemp();" id="print" >Get current temperature</button><td>
+                <td><button type="button" onclick="connect();" id="connect" >Connect</button><td>
+                <td><button type="button" onclick="send();" id="btnSend" >Send</button><td>
+            </tr>
         </table>
          
 	</body>

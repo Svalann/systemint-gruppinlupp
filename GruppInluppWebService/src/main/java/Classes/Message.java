@@ -1,18 +1,18 @@
 package Classes;
 
 public class Message {
-    private float temperature;
+    private String temperature;
 
     @Override
     public String toString() {
         return super.toString();
     }
 
-    public float getTemperature() {
+    public String getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
 }
