@@ -6,10 +6,10 @@
     <body onload="connect()">
         <table>
             <tr>
-                <td><h3>Temperature</h3></td>
-                <td><h3>Humidity</h3></td>
-                <td><h3>Last Data</h3></td>
-                <td><h3>Updated</h3></td>
+                <td width="150"><h3>Temperature</h3></td>
+                <td width="150"><h3>Humidity</h3></td>
+                <td width="250"><h3>Last Data</h3></td>
+                <td width="200"><h3>Updated</h3></td>
             </tr>
             
             <tr>
@@ -19,9 +19,7 @@
                 <TD><H3 id="txtLastUpdate">----</H3></TD>
             </tr>
             <tr>
-                <td><button type="button" onclick="printLatestTemp()" id="print" >Get current temperature</button><td>
                 <td><button type="button" onclick="connect()" id="btnConnect" >Connect</button><td>
-                <td><button type="button" onclick="send()" id="btnSend" >Send</button><td>
             </tr>
         </table>
          

@@ -24,21 +24,11 @@ function connect() {
         }
         var today = new Date(); 
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        
         updatedText.textContent = time;
     };
 }
 
-function send() {
-    var temperatureFromDb = "28";
+function getAllData(){
     
-    var json = JSON.stringify({
-        "temperature":temperatureFromDb
-    });
-    ws.send(json);
-    
-}
-
-function printLatestTemp(){
-    var tempText = document.getElementById("txttemperature");
-    tempText.textContent = "25";
 }

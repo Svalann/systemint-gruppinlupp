@@ -1,7 +1,5 @@
  package Server;
 
-
-import Classes.DAO;
 import java.io.IOException;
 
 import javax.websocket.EncodeException;
