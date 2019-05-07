@@ -19,21 +19,20 @@ import java.util.logging.Logger;
 @ServerEndpoint(value = "/tempsensor/connect", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class SensorEndpoint {
     private Session session;
-    private static DAO d = new DAO();
+    private static SensorDataDBDao dao = new SensorDataDBDao();
 
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
         
         this.session = session;
         Message m = new Message();
-        int i = 0;
         
         while(true){
             try {
-                Thread.sleep(3000);
-                m.setTemperature(""+d.method()+ i);
+                
+                m.setTemperature(""+dao.getLatestData().getTemperature());
                 session.getBasicRemote().sendObject(m);
-                i++;                
+                Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SensorEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
