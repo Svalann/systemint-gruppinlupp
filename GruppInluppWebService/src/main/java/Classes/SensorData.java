@@ -1,6 +1,5 @@
 package Classes;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +18,12 @@ public class SensorData implements Serializable {
 
         this.temperature = temperature;
 
+    }
+
+    public SensorData(float temperature, float humidity, Date created) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.created = created;
     }
 
     public int getId() {
@@ -52,5 +57,5 @@ public class SensorData implements Serializable {
     public void setCreated(Date created) {
         this.created = created;
     }
-    
+
 }
