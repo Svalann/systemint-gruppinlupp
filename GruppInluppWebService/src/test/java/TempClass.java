@@ -11,11 +11,9 @@ public class TempClass implements Serializable {
     public TempClass() {
     }
 
-    public TempClass(int id, float temperature, float humidity) {
+    public TempClass(float temperature) {
 
-        this.id = id;
         this.temperature = temperature;
-        this.humidity = humidity;
 
     }
 
