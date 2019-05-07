@@ -42,8 +42,8 @@ public class SensorDataDBDao {
         //List<SensorData> list = new ArrayList<>();
         SensorData data = new SensorData();
         
-        try(Connection con = DriverManager.getConnection(prop.getProperty("connectionString2")
-                , prop.getProperty("name2"), prop.getProperty("password2"))) {
+        try(Connection con = DriverManager.getConnection(prop.getProperty("connectionString")
+                , prop.getProperty("name"), prop.getProperty("password"))) {
             
             PreparedStatement stmt = con.prepareStatement("select temperature, humidity, created from innodb.SensorData order by created desc limit 1"); 
             
