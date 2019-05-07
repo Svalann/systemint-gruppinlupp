@@ -13,6 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import Classes.Message;
+import Classes.SensorData;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,13 +26,16 @@ public class SensorEndpoint {
     public void onOpen(Session session) throws IOException, EncodeException {
         
         this.session = session;
-        Message m = new Message();
+        Message messageToSend = new Message();
         
         while(true){
             try {
+                SensorData latestData = dao.getLatestData();
+                messageToSend.setTemperature(latestData.getTemperature());
+                messageToSend.setHumidity(latestData.getHumidity());
+                messageToSend.setCreated(latestData.getCreated());
                 
-                m.setTemperature(""+dao.getLatestData().getTemperature());
-                session.getBasicRemote().sendObject(m);
+                session.getBasicRemote().sendObject(messageToSend);
                 Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SensorEndpoint.class.getName()).log(Level.SEVERE, null, ex);
