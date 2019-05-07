@@ -16,7 +16,7 @@ import Classes.Message;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@ServerEndpoint(value = "/tempsensor", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
+@ServerEndpoint(value = "/tempsensor/connect", decoders = MessageDecoder.class, encoders = MessageEncoder.class)
 public class SensorEndpoint {
     private Session session;
     private static DAO d = new DAO();
@@ -24,18 +24,16 @@ public class SensorEndpoint {
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
         
-        System.out.println("In onOpen");
         this.session = session;
         Message m = new Message();
-        System.out.println("In onOpen");
+        int i = 0;
         
         while(true){
             try {
                 Thread.sleep(3000);
-                m.setTemperature(""+d.method());
+                m.setTemperature(""+d.method()+ i);
                 session.getBasicRemote().sendObject(m);
-
-                
+                i++;                
             } catch (InterruptedException ex) {
                 Logger.getLogger(SensorEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -1,42 +1,49 @@
 package Server;
 
 
-import Classes.TempClass;
+import Classes.SensorData;
+import Classes.SensorData;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class TempDBDao {
+public class SensorDataDBDao {
     
-    public TempDBDao(){
+    public SensorDataDBDao(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TempDBDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SensorDataDBDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public List<TempClass> getLatestTemp(){
+    public List<SensorData> getLatestTemp(){ //ej list? bara SensorData?
         
-        List<TempClass> list = new ArrayList<>();
+        List<SensorData> list = new ArrayList<>();
         
         try(Connection con = DriverManager.getConnection("url", "user", "password")) {
             
-            PreparedStatement stmt = con.prepareStatement("select temperature from ServerNamn"); // change ServerNamn to schema name
+            PreparedStatement stmt = con.prepareStatement("select temperature, humidity, created from SensorData"); // change ServerNamn to schema name
             
             ResultSet rs = stmt.executeQuery();
             
             while(rs.next()){
                 
                 float temperature = rs.getFloat("temperature");
-                
-                list.add(new TempClass(temperature));
+                float humidity = rs.getFloat("humidity");
+                Date created = rs.getTimestamp("created");
+                SensorData data = new SensorData();
+                data.setTemperature(temperature);
+                data.setHumidity(humidity);
+                data.setCreated(created);
+                list.add(data);
                 
             }
         }

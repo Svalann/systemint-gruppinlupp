@@ -1,11 +1,10 @@
 var ws;
 
 function connect() {
-   ws = new WebSocket("ws://localhost:8080/GruppInluppWebService/tempsensor");
+    ws = new WebSocket("ws://localhost:8080/GruppInluppWebService/tempsensor/connect");
    
     ws.onmessage = function(event) {
         
-        alert('Msg recieved');
         var message = JSON.parse(event.data);
         var tempText = document.getElementById("txttemperature"); 
         

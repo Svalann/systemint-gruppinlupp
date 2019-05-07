@@ -3,7 +3,7 @@
     <head>
         <title>Sensor temp display</title>
     </head>
-    <body>
+    <body onload="connect()">
         <table>
             <tr><td>
                     <h1>Current Temperature</h1>
@@ -13,9 +13,8 @@
                 <TD><H1 id="txttemperature">23,5</H1></TD>
             </tr>
             <tr>
-                <td><button type="button" onclick="printLatestTemp();" id="print" >Get current temperature</button><td>
-                <td><button type="button" onclick="connect();" id="connect" >Connect</button><td>
-                <td><button type="button" onclick="send();" id="btnSend" >Send</button><td>
+                <td><button type="button" onclick="printLatestTemp()" id="print" >Get current temperature</button><td>
+                <td><button type="button" onclick="send()" id="btnSend" >Send</button><td>
             </tr>
         </table>
          
