@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Chat</title>
     </head>
     <body>
-        <h1>Hello Tolga!</h1>
-    </body>
+        <table>
+            <tr><td>
+                    <h1>Current Temperature</h1>
+            </td></tr>
+            
+            <tr>
+                <TD><H1 id="txttemperature">23,5</H1></TD>
+            </tr>
+            <tr><td><button type="button" onclick="printLatestTemp();" id="buttonState" >Get current temperature</button><td></tr>
+        </table>
+         
+	</body>
+    <script src="websocket.js"></script>
+
 </html>
