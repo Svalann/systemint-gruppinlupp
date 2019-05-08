@@ -1,14 +1,13 @@
 package Server;
 
-import Classes.SensorData;
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import Classes.SensorData;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,33 +17,41 @@ import java.util.logging.Logger;
 
 public class SensorDataDBDao {
 
-    static Properties prop = new Properties();
+    private static final Properties prop = new Properties();
+    private final String url;
+    Connection connection = null;
 
     public SensorDataDBDao() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            /*Viktor*/  
             prop.load(new FileInputStream("C:\\Users\\vikto\\OneDrive\\Nackademin IoT\\SystemIntegration GruppInlupp\\GruppInluppWebService\\src\\main\\java\\Server\\settings.properties"));
-            //prop.load(new FileInputStream("C:\\Users\\andic\\OneDrive\\Dokument\\NetBeansProjects\\systemint-gruppinlupp\\GruppInluppWebService\\settings.properties"));
-            //prop.load(new FileInputStream("C:\\Users\\vikto\\OneDrive\\Nackademin IoT\\SystemIntegration GruppInlupp\\GruppInluppWebService\\src\\main\\java\\Server\\settings.properties"));
-            //prop.load(new FileInputStream("C:\\Users\\vikto\\OneDrive\\Nackademin IoT\\SystemIntegration GruppInlupp\\GruppInluppWebService\\src\\main\\java\\Server\\settings.properties"));
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SensorDataDBDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SensorDataDBDao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+            /*Tolga*/   
+            //prop.load(new FileInputStream(""));
+            /*Robert*/  
+            //prop.load(new FileInputStream(""));
+            /*Tobias*/  
+            //prop.load(new FileInputStream(""));
+            
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(SensorDataDBDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        String hostName = prop.getProperty("hostName"); 
+        String dbName = prop.getProperty("dbName"); 
+        String user = prop.getProperty("user"); 
+        String password = prop.getProperty("password"); 
+        this.url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;"
+            + "hostNameInCertificate=*.database.windows.net;loginTimeout=30;", hostName, dbName, user, password);
     }
 
     public SensorData getLatestData() {
 
-        //List<SensorData> list = new ArrayList<>();
         SensorData data = new SensorData();
+         try {
+            connection = DriverManager.getConnection(url);
 
-        try (Connection con = DriverManager.getConnection(prop.getProperty("connectionString"),
-                 prop.getProperty("name"), prop.getProperty("password"))) {
-
-            PreparedStatement stmt = con.prepareStatement("select temperature, humidity, created from innodb.SensorData order by created desc limit 1");
+            PreparedStatement stmt = connection.prepareStatement("SELECT TOP 1 [Id],[Temperature],[Humidity],[Created] FROM [dbo].[SensorData] ORDER BY [Created] DESC");
 
             ResultSet rs = stmt.executeQuery();
 
@@ -59,10 +66,11 @@ public class SensorDataDBDao {
                 data.setCreated(created);
 
             }
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return data;
     }
 
@@ -71,10 +79,9 @@ public class SensorDataDBDao {
         List<SensorData> list = new ArrayList<>();
         //SensorData data = new SensorData();
 
-        try (Connection con = DriverManager.getConnection(prop.getProperty("connectionString"),
-                 prop.getProperty("name"), prop.getProperty("password"))) {
+        try (Connection con = DriverManager.getConnection(url)) {
 
-            PreparedStatement stmt = con.prepareStatement("select temperature, humidity, created from innodb.SensorData");
+            PreparedStatement stmt = con.prepareStatement("SELECT [Temperature],[Humidity],[Created] FROM [dbo].[SensorData]");
 
             ResultSet rs = stmt.executeQuery();
 
@@ -87,6 +94,7 @@ public class SensorDataDBDao {
                 list.add(new SensorData(temperature, humidity, created));
 
             }
+            con.close();
         }
         catch(Exception e){
             e.printStackTrace();
