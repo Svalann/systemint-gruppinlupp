@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
-              <script type="text/javascript">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
          window.onload = function () {
             var chart = new CanvasJS.Chart("chartContainer",
             {
@@ -52,8 +52,7 @@
         <div class='container text-center'  class='text-center row justify-content-center'>
 
             <table>
-                
-                <div id="chartContainer" style="height: 250px; width: 100%;"></div>
+              
                 
                 <tr>
                     <td width="150" class="text-success"><h3>Temperature</h3></td>
@@ -69,9 +68,21 @@
                     <TD><H3 id="txtLastUpdate" class="text-warning">----</H3></TD>
                 </tr>
                 <tr>
-                      <a href='/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData' class='btn btn-lg btn-success btn-block'> To Message Page </button>  
-                   
+                    <td>
+                      <a href='/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData' class='btn btn-lg btn-success btn-block'> All messages </a>  
+                    </td>
+                    <td>
+                        <Button onclick="getAllData()"> Get All Data</Button>
+                    </td>
+                    <td>
+                        <h3 id="test">O</h3>
+                        <div class="divTest"></div>
+                    </td>
                 </tr>
+                
+                <tr>
+                    <div id="chartContainer" style="height: 250px; width: 100%;"></div>
+                <tr>
             </table>
     
         </div>

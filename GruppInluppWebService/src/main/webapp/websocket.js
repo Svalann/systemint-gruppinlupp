@@ -29,12 +29,26 @@ function connect() {
     };
 }
 
+
+
 function getAllData(){
     
-    const url = "/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData";
-    
-    $getJSON(url, function(result){
+    var url = "http://localhost:8080/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData";
+    $.getJSON(url, function(data) {
+        $.each(data, function(i, message){
+            var temp = message.temperature;
+            var humid = message.humidity;
+            var created = message.created;
+            $(".divTest").append(temp + " ");
+        });
         
-        console.log(result)
+        //var text = `Temperature: ${data.temperature}
+        //            Humidity: ${data.humidity}`
+                    
+        //var test = document.getElementById("test"); 
+        //test.textContent = text;
+        
+        //$(".test").html(text);
     });
-}
+
+}   
