@@ -8,8 +8,8 @@
         <link rel='stylesheet' href='https://www.epndata.com/iot18/demo/css/style.css'>
     </head>
     
-   <body onload="connect()" class='text-center row justify-content-center'>
-        <div class='container text-center'>
+   <body onload="connect()">
+        <div class='container text-center'  class='text-center row justify-content-center'>
 
             <table>
                 <tr>
@@ -25,16 +25,11 @@
                     <TD><H3 id="txtCreated" class="text-warning">----</H3></TD>
                     <TD><H3 id="txtLastUpdate" class="text-warning">----</H3></TD>
                 </tr>
+                <tr>
+                      <a href='/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData' class='btn btn-lg btn-success btn-block'> To Message Page </button>  
+                   
+                </tr>
             </table>
-    
-            <div class='py-5'> 
-                <form action='/sendmessage' method='post' class='form-signin'>
-                    <button class='btn btn-lg btn-success btn-block' name='sendbtn' value='sendpage'> To Message Page </button>
-                </form>              
-                <form action='/viewtemp' method='post' class='form-signin'>
-                    <button class='btn btn-lg btn-danger btn-block' name='refreshbtn' value='viewpage'> Refresh </button>
-                </form> 
-            </div>
     
         </div>
 
