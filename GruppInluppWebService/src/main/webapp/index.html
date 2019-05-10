@@ -1,6 +1,46 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+              <script type="text/javascript">
+         window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+              title:{
+                text: ""
+            },
+            axisX:{
+                title: "",
+                gridThickness: 2
+            },
+            axisY: {
+                title: "Temperatures"
+            },
+            data: [
+            {        
+                type: "area",
+                dataPoints: [
+                { x: new Date(2019, 04, 1), y: 50},
+                { x: new Date(2019, 04, 2), y: 38},
+                { x: new Date(2019, 04, 3), y: 43},
+                { x: new Date(2019, 04, 4), y: 29},
+                { x: new Date(2019, 04, 5), y: 41},
+                { x: new Date(2019, 04, 6), y: 54},
+                { x: new Date(2019, 04, 7), y: 66},
+                { x: new Date(2019, 04, 8), y: 60},
+                { x: new Date(2019, 04, 9), y: 53},
+                { x: new Date(2019, 04, 10), y: 60}
+                ]
+            }
+            ]
+        });
+
+            chart.render();
+        }
+        </script>
+        <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="websocket.js"></script>
+        
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <title>Sensor temp display</title>
@@ -8,10 +48,13 @@
         <link rel='stylesheet' href='https://www.epndata.com/iot18/demo/css/style.css'>
     </head>
     
-   <body onload="connect()">
+   <body>
         <div class='container text-center'  class='text-center row justify-content-center'>
 
             <table>
+                
+                <div id="chartContainer" style="height: 250px; width: 100%;"></div>
+                
                 <tr>
                     <td width="150" class="text-success"><h3>Temperature</h3></td>
                     <td width="150" class="text-primary"><h3>Humidity</h3></td>
@@ -38,3 +81,4 @@
     <script src="websocket.js"></script>
 
 </html>
+<script> connect(); </script>
