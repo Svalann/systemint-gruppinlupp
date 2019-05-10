@@ -13,14 +13,7 @@ public class SensorDataService {
 
     private static SensorDataDBDao dao = new SensorDataDBDao();
 
-    @GET
-    @Path("/hi")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String test() {
-
-        return "Hej, det funkar";
-        
-    }
+   
     
     @GET
     @Path("/TempSensor/getLatestData")
