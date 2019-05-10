@@ -20,7 +20,8 @@ public class SensorData implements Serializable {
 
     }
 
-    public SensorData(float temperature, float humidity, Date created) {
+    public SensorData(int id, float temperature, float humidity, Date created) {
+        this.id = id;
         this.temperature = temperature;
         this.humidity = humidity;
         this.created = created;

@@ -1,96 +1,149 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript">
-         window.onload = function () {
-             
-            var chart = new CanvasJS.Chart("chartContainer",
-            {
-              title:{
-                text: ""
-            },
-            axisX:{
-                title: "",
-                gridThickness: 2
-            },
-            axisY: {
-                title: "Temperatures"
-            },
-            data: [
-            {        
-                type: "area",
-                dataPoints: [
-                { x: new Date(2019, 04, 1), y: 50},
-                { x: new Date(2019, 04, 2), y: 38},
-                { x: new Date(2019, 04, 3), y: 43},
-                { x: new Date(2019, 04, 4), y: 29},
-                { x: new Date(2019, 04, 5), y: 41},
-                { x: new Date(2019, 04, 6), y: 54},
-                { x: new Date(2019, 04, 7), y: 66},
-                { x: new Date(2019, 04, 8), y: 60},
-                { x: new Date(2019, 04, 9), y: 53},
-                { x: new Date(2019, 04, 10), y: 60}
-                ]
-            }
-            ]
-        });
-
-            chart.render();
-        }
-        </script>
-        <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>        
         <script src="websocket.js"></script>
+        
         
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <title>Sensor temp display</title>
-        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'>
-        <link rel='stylesheet' href='https://www.epndata.com/iot18/demo/css/style.css'>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+        <style> p.top {margin-top: 100px;}</style>
     </head>
     
-   <body>
-        <div class='container text-center'  class='text-center row justify-content-center'>
-
-            <table>
-              
-                
-                <tr>
-                    <td width="150" class="text-success"><h3>Temperature</h3></td>
-                    <td width="150" class="text-primary"><h3>Humidity</h3></td>
-                    <td width="250" class="text-warning"><h3>Last Data</h3></td>
-                    <td width="200" class="text-warning"><h3>Updated</h3></td>
-                </tr>
-
-                <tr>
-                    <TD><H1 id="txtTemperature" class="text-success">--,-</H1></TD>
-                    <TD><H1 id="txtHumidity" class="text-primary">--,-</H1></TD>
-                    <TD><H3 id="txtCreated" class="text-warning">----</H3></TD>
-                    <TD><H3 id="txtLastUpdate" class="text-warning">----</H3></TD>
-                </tr>
-                <tr>
-                    <td>
-                      <a href='/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData' class='btn btn-lg btn-success btn-block'> All messages </a>  
-                    </td>
-                    <td>
-                        <Button onclick="getAllData()"> Get All Data</Button>
-                    </td>
-                    <td>
-                        <h3 id="test">O</h3>
-                        <div class="divTest"></div>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <div id="chartContainer" style="height: 250px; width: 100%;"></div>
-                <tr>
-            </table>
+   
     
+    <body style="background-color:#E8E8E8;">
+       <p class="top"></p>
+       <div class='text-center row justify-content-center'>
+           <div class="col-sm-2" ><h3 class="text-success">Temperature</h3></div>
+           <div class="col-sm-2" ><h3 class="text-primary">Humidity</h3></div>
+           <div class="col-sm-2" ><h3 class="text-dark">Last Data</h3></div>
+           <div class="col-sm-2" ><h3 class="text-dark">Updated</h3></div>
         </div>
-
-    </body>
+       <div class='text-center row justify-content-center'>
+            <div class="col-sm-2" ><H1 id="txtTemperature" class="text-success">--,-</H1></div>
+            <div class="col-sm-2" ><H1 id="txtHumidity" class="text-primary">--,-</H1></div>
+            <div class="col-sm-2" ><H3 id="txtCreated" class="text-dark">----</H3></div>
+            <div class="col-sm-2" ><H3 id="txtLastUpdate" class="text-dark">----</H3></div>
+       </div>
+        
+       
+       <br><br>
+        <div class='text-center row justify-content-center'>
+            <div id="my_dataviz" class="col"></div>
+       </div>
    
     <script src="websocket.js"></script>
 
 </html>
 <script> connect(); </script>
+
+
+<script>
+    // set the dimensions and margins of the graph
+var margin = {top: 10, right: 100, bottom: 30, left: 30},
+    width =  1200 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+//Read the data
+d3.json("http://localhost:8080/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData", function(data) {
+
+    // List of groups (here I have one group per column)
+    var allGroup = ["temperature", "humidity"]
+
+    // Reformat the data: we need an array of arrays of {x, y} tuples
+    var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
+      return {
+        name: grpName,
+        values: data.map(function(d) {
+          return {id: d.id, value: +d[grpName]};
+        })
+      };
+    });
+    // I strongly advise to have a look to dataReady with
+    console.log(dataReady)
+
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal()
+      .domain(allGroup)
+      .range(d3.schemeSet2);
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleLinear()
+      .domain([0,2500])
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain( [0,80])
+      .range([ height, 0 ]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+    // Add the lines
+    var line = d3.line()
+      .x(function(d) { return x(+d.id) })
+      .y(function(d) { return y(+d.value) })
+    svg.selectAll("myLines")
+      .data(dataReady)
+      .enter()
+      .append("path")
+        .attr("class", function(d){ return d.name })
+        .attr("d", function(d){ return line(d.values) } )
+        .attr("stroke", function(d){ return myColor(d.name) })
+        .style("stroke-width", 4)
+        .style("fill", "none")
+
+    // Add the points
+    svg
+      // First we need to enter in a group
+      .selectAll("myDots")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .style("fill", function(d){ return myColor(d.name) })
+        .attr("class", function(d){ return d.name })
+      // Second we need to enter in the 'values' part of this group
+      .selectAll("myPoints")
+      .data(function(d){ return d.values })
+      .enter()
+     
+
+    // Add a legend (interactive)
+    svg
+      .selectAll("myLegend")
+      .data(dataReady)
+      .enter()
+        .append('g')
+        .append("text")
+          .attr('x', function(d,i){ return 30 + i*120})
+          .attr('y', 30)
+          .text(function(d) { return d.name; })
+          .style("fill", function(d){ return myColor(d.name) })
+          .style("font-size", 15)
+        .on("click", function(d){
+          // is the element currently visible ?
+          currentOpacity = d3.selectAll("." + d.name).style("opacity")
+          // Change the opacity: from 0 to 1 or from 1 to 0
+          d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+
+        })
+})
+
+</script>

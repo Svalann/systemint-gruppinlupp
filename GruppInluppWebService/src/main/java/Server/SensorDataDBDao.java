@@ -81,7 +81,7 @@ public class SensorDataDBDao {
 
         try (Connection con = DriverManager.getConnection(url)) {
 
-            PreparedStatement stmt = con.prepareStatement("SELECT [Temperature],[Humidity],[Created] FROM [dbo].[SensorData]");
+            PreparedStatement stmt = con.prepareStatement("SELECT TOP 2500 [Id],[Temperature],[Humidity],[Created] FROM [dbo].[SensorData]");
 
             ResultSet rs = stmt.executeQuery();
 
@@ -90,8 +90,9 @@ public class SensorDataDBDao {
                 float temperature = rs.getFloat("temperature");
                 float humidity = rs.getFloat("humidity");
                 Date created = rs.getTimestamp("created");
+                int id = rs.getInt("id");                
 
-                list.add(new SensorData(temperature, humidity, created));
+                list.add(new SensorData(id, temperature, humidity, created));
 
             }
             con.close();

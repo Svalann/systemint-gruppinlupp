@@ -94,3 +94,7 @@ function printChart(){
     chart.render();
 }
 
+function plotGrapgh(){
+
+
+}
