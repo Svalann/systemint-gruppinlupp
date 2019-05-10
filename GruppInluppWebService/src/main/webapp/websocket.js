@@ -30,36 +30,11 @@ function connect() {
 }
 
 function getAllData(){
-    var array = arrayFromDB;
     
-    graf.DataPoints = array;
+    const url = "/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData";
     
-    
-    const request = new XMLHttpRequest();
- 
-    request.open('GET', '/GruppInluppWebService/rest/SensorDataService/TempSensor/getAllData');
-    request.send(); 
- 
-    request.onload = () => {
-      if (request.status === 200) {
-        console.log("Success"); // So extract data from json and create table
-
-        //Extracting data
-        var jokeid = JSON.parse(request.response).value.id;
-        var joke = JSON.parse(request.response).value.joke;
-
-        //Creating table
-        var table="<table>";
-            table+="<tr><td>Joke ID</td><td>Joke</td></tr>"; 
-            table+="<tr><td>"+jokeid+"</td><td>"+joke+"</td></tr>";
-            table+="</table>";
-
-        //Showing the table inside table
-        document.getElementById("mydiv").innerHTML = table;   
-        } 
-      };
-
-      request.onerror = () => {
-        console.log("error")
-      };
+    $getJSON(url, function(result){
+        
+        console.log(result)
+    });
 }
