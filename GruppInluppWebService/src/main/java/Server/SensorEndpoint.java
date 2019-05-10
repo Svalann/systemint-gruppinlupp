@@ -12,6 +12,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import Classes.Message;
 import Classes.SensorData;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +33,14 @@ public class SensorEndpoint {
                 SensorData latestData = dao.getLatestData();
                 messageToSend.setTemperature(latestData.getTemperature());
                 messageToSend.setHumidity(latestData.getHumidity());
-                messageToSend.setCreated(latestData.getCreated());
+                
+                Date date = latestData.getCreated();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.HOUR_OF_DAY, 2); // adds four hour
+                date = cal.getTime();
+                
+                messageToSend.setCreated(date);
                 
                 session.getBasicRemote().sendObject(messageToSend);
                 Thread.sleep(3000);
