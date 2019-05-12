@@ -6,6 +6,7 @@ public class Message {
     private float temperature;
     private float humidity;
     private Date created;
+    private int id;
 
     @Override
     public String toString() {
@@ -33,6 +34,14 @@ public class Message {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

@@ -31,16 +31,17 @@ public class SensorEndpoint {
         while(true){
             try {
                 SensorData latestData = dao.getLatestData();
+                
                 messageToSend.setTemperature(latestData.getTemperature());
                 messageToSend.setHumidity(latestData.getHumidity());
+                messageToSend.setId(latestData.getId());
                 
                 Date date = latestData.getCreated();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
                 cal.add(Calendar.HOUR_OF_DAY, 2); // adds four hour
-                date = cal.getTime();
-                
-                messageToSend.setCreated(date);
+                date = cal.getTime();                
+                messageToSend.setCreated(date);                
                 
                 session.getBasicRemote().sendObject(messageToSend);
                 Thread.sleep(3000);

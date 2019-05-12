@@ -81,7 +81,7 @@ public class SensorDataDBDao {
 
         try (Connection con = DriverManager.getConnection(url)) {
 
-            PreparedStatement stmt = con.prepareStatement("SELECT TOP 2500 [Id],[Temperature],[Humidity],[Created] FROM [dbo].[SensorData]");
+            PreparedStatement stmt = con.prepareStatement("SELECT [Id],[Temperature],[Humidity],[Created] FROM [dbo].[SensorData]");
 
             ResultSet rs = stmt.executeQuery();
 
@@ -92,6 +92,36 @@ public class SensorDataDBDao {
                 Date created = rs.getTimestamp("created");
                 int id = rs.getInt("id");                
 
+                list.add(new SensorData(id, temperature, humidity, created));
+
+            }
+            con.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    
+    public List<SensorData> getIntervall(int idFrom, int idTo) {
+
+        List<SensorData> list = new ArrayList<>();
+        //SensorData data = new SensorData();
+
+        try (Connection con = DriverManager.getConnection(url)) {
+
+            PreparedStatement stmt = con.prepareStatement("SELECT [Id],[Temperature],[Humidity],[Created] FROM [dbo].[SensorData] WHERE [Id] > ? AND [Id] < ?");
+            stmt.setInt(1,idFrom); 
+            stmt.setInt(2,idTo);    
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                float temperature = rs.getFloat("temperature");
+                float humidity = rs.getFloat("humidity");
+                Date created = rs.getTimestamp("created");
+                int id = rs.getInt("id");
+                
                 list.add(new SensorData(id, temperature, humidity, created));
 
             }
