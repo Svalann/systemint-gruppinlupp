@@ -23,35 +23,12 @@ function connect() {
         if (message.hasOwnProperty("humidity")){     
             humidText.textContent = message.humidity;
         }
-        if (message.hasOwnProperty("created")){     
-            createdText.textContent = message.created;
+        if (message.hasOwnProperty("created")){ 
+            var created = new Date(message.created);
+            createdText.textContent = created.toLocaleString();
         }
         
-        var today = new Date(); 
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        
-        updatedText.textContent = time;
+        var today = new Date();         
+        updatedText.textContent = today.toLocaleTimeString();
     };
 }
-
-
-
-function oldGraph(){
-    alert("In Old");
-    var listOfData = [];
-    var minValue = document.getElementById("minValue"); 
-    var maxValue = document.getElementById("maxValue"); 
-    var url = "http://localhost:8080/GruppInluppWebService/rest/SensorDataService/TempSensor/" +minValue + "/" + maxValue;
-    
-    $.getJSON(url, function(data) {
-        $.each(data, function(i, message){
-            var temp = message.temperature;
-            var humid = message.humidity;
-            var created = message.created;
-            listOfData.push(message); 
-            
-            $(".divTest").append(temp + " ");
-        });
-    });
-}
-

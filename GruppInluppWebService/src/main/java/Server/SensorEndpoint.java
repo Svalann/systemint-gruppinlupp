@@ -39,7 +39,7 @@ public class SensorEndpoint {
                 Date date = latestData.getCreated();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
-                cal.add(Calendar.HOUR_OF_DAY, 2); // adds four hour
+                cal.add(Calendar.HOUR_OF_DAY, 2);
                 date = cal.getTime();                
                 messageToSend.setCreated(date);                
                 
