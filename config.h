@@ -6,8 +6,8 @@
 #if LOCATION == HOME
 #define DEVICE_ID "TempSensor1"
 static char *connectionString = "HostName=Iot18-Hub.azure-devices.net;DeviceId=TempSensor1;SharedAccessKey=On4WAxHQP25jop+2Zuz2Qc8YcOp2mRONP8NYBZOUK0o=";
-static char *WiFi_SSID = "Rullen";
-static char *WiFi_Password = "Banankaka17";
+static char *WiFi_SSID = "";
+static char *WiFi_Password = "";
 #define LATITUDE 59259504
 #define LONGITUDE 18195617
 #endif 
